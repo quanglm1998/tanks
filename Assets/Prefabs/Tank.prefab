@@ -5603,7 +5603,7 @@ MonoBehaviour:
   m_Shell: {fileID: 54675685352697740, guid: dccd4749b7a314e509df88d15477335a, type: 3}
   m_FireTransform: {fileID: 4431280524148326}
   m_AimSlider: {fileID: 114628322403032584}
-  m_ShootingAudio: {fileID: 82611501352753784}
+  m_ShootingAudio: {fileID: 0}
   m_ChargingClip: {fileID: 8300000, guid: c17f124fcdc0f5446a72f793898bd74b, type: 3}
   m_FireClip: {fileID: 8300000, guid: 672a9941361ad494a99fba36759eca80, type: 3}
   m_MinLaunchForce: 15
