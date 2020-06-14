@@ -3,7 +3,6 @@ using UnityEngine.UI;
 
 public class TankBotShooting : MonoBehaviour
 {
-    public int m_PlayerNumber = 2;
     public Rigidbody m_Shell;
     public Transform m_FireTransform;
     public Slider m_AimSlider;
@@ -19,7 +18,17 @@ public class TankBotShooting : MonoBehaviour
     private float m_CurrentLaunchForce;
     private float m_ChargeSpeed;
     private bool m_Fired;
+    private string m_OpponentMovementAxisName;
+    private Transform opponent;
+    private float m_Speed = 12f;
+    private float fireTime = 0f;
+    private TankBotMovement tankBotMovement;
+    public float delayTime = 3f;
+    public float loadTime = 0.6f;
 
+    public float getFireTime() {
+        return fireTime;
+    }
 
     private void OnEnable()
     {
@@ -30,26 +39,35 @@ public class TankBotShooting : MonoBehaviour
 
     private void Start()
     {
-        m_FireButton = "Fire" + m_PlayerNumber;
-
+        fireTime = delayTime;
+        opponent = GameObject.FindGameObjectsWithTag("Player")[0].transform;
+        m_OpponentMovementAxisName = "Vertical" + 1;
         m_ChargeSpeed = (m_MaxLaunchForce - m_MinLaunchForce) / m_MaxChargeTime;
+        tankBotMovement = transform.gameObject.GetComponent<TankBotMovement>();
     }
 
 
     private void Update()
     {
-        // Track the current state of the fire button and make decisions based on the current launch
-        // force.
+        float m_OpponentInputValue = Input.GetAxis(m_OpponentMovementAxisName);
+        Vector3 expected_position = opponent.position + opponent.forward * m_OpponentInputValue * m_Speed * (tankBotMovement.predictionTime - loadTime);
+        float distance = Vector3.Distance(transform.position, expected_position);
+        distance = Mathf.Max(Mathf.Min(distance, m_MaxLaunchForce), m_MinLaunchForce);
+        Debug.Log(distance + " : " + m_CurrentLaunchForce);
+
+
         m_AimSlider.value = m_MinLaunchForce;
 
-        if (m_CurrentLaunchForce >= m_MaxLaunchForce && !m_Fired)
+        if (fireTime > 0) {
+            fireTime -= Time.deltaTime;
+        }
+        else if (m_CurrentLaunchForce >= m_MaxLaunchForce && !m_Fired)
         {
             // At max charge, not yet fired.
             m_CurrentLaunchForce = m_MaxLaunchForce;
             Fire();
-
         }
-        else if (Input.GetButtonDown(m_FireButton))
+        else if(m_Fired)
         {
             // Have we pressed the Fire button for the first time?
             m_Fired = false;
@@ -59,19 +77,16 @@ public class TankBotShooting : MonoBehaviour
             m_ShootingAudio.Play();
 
         }
-        else if (Input.GetButton(m_FireButton) && !m_Fired)
+        else if (m_CurrentLaunchForce < distance)
         {
             // Holding the fire button, not yet fired.
             m_CurrentLaunchForce += m_ChargeSpeed * Time.deltaTime;
-
             m_AimSlider.value = m_CurrentLaunchForce;
-
         }
-        else if (Input.GetButtonUp(m_FireButton) && !m_Fired)
+        else
         {
             // We releasted the fire button, having not fired yet.
             Fire();
-
         }
     }
 
@@ -79,6 +94,7 @@ public class TankBotShooting : MonoBehaviour
     private void Fire()
     {
         // Instantiate and launch the shell.
+        fireTime = delayTime;
         m_Fired = true;
 
         Rigidbody shellInstance = Instantiate(m_Shell, m_FireTransform.position, m_FireTransform.rotation) as Rigidbody;
