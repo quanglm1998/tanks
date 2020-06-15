@@ -19,6 +19,7 @@ public class TankBotShooting : MonoBehaviour
     private float m_ChargeSpeed;
     private bool m_Fired;
     private string m_OpponentMovementAxisName;
+    private string m_OpponentTurnAxisName;
     private Transform opponent;
     private float m_Speed = 12f;
     private float fireTime = 0f;
@@ -42,6 +43,7 @@ public class TankBotShooting : MonoBehaviour
         fireTime = delayTime;
         opponent = GameObject.FindGameObjectsWithTag("Player")[0].transform;
         m_OpponentMovementAxisName = "Vertical" + 1;
+        m_OpponentTurnAxisName = "Horizontal" + 1;
         m_ChargeSpeed = (m_MaxLaunchForce - m_MinLaunchForce) / m_MaxChargeTime;
         tankBotMovement = transform.gameObject.GetComponent<TankBotMovement>();
     }
@@ -49,11 +51,12 @@ public class TankBotShooting : MonoBehaviour
 
     private void Update()
     {
-        float m_OpponentInputValue = Input.GetAxis(m_OpponentMovementAxisName);
-        Vector3 expected_position = opponent.position + opponent.forward * m_OpponentInputValue * m_Speed * (tankBotMovement.predictionTime - loadTime);
-        float distance = Vector3.Distance(transform.position, expected_position);
+        float opponentMovementInputValue = Input.GetAxis(m_OpponentMovementAxisName);
+        float opponentTurnInputValue = Input.GetAxis(m_OpponentTurnAxisName);
+        Vector3 nextPosition = tankBotMovement.getPosition(tankBotMovement.predictionTime - loadTime, opponentTurnInputValue, opponentMovementInputValue);
+        float distance = Vector3.Distance(transform.position, nextPosition);
         distance = Mathf.Max(Mathf.Min(distance, m_MaxLaunchForce), m_MinLaunchForce);
-        Debug.Log(distance + " : " + m_CurrentLaunchForce);
+        // Debug.Log(distance + " : " + m_CurrentLaunchForce);
 
 
         m_AimSlider.value = m_MinLaunchForce;

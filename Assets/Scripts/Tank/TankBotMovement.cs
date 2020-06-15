@@ -18,6 +18,7 @@ public class TankBotMovement : MonoBehaviour
     private float m_OriginalPitch;
     private Transform opponent;
     private TankBotShooting tankBotShooting;
+    // private TankMovement tankMovement;
     private float lastMovementInput = 0f;
     private float updateTime = 0f;
     public float predictionTime = 1.3f;
@@ -29,14 +30,15 @@ public class TankBotMovement : MonoBehaviour
         m_Rigidbody = GetComponent<Rigidbody>();
         opponent = GameObject.FindGameObjectsWithTag("Player")[0].transform;
         tankBotShooting = transform.gameObject.GetComponent<TankBotShooting>();
+        m_MovementInputValue = 0f;
+        m_TurnInputValue = 0f;
+        // tankMovement = GameObject.FindGameObjectsWithTag("Player")[0].GetComponent<TankMovement>();
     }
 
 
     private void OnEnable()
     {
         m_Rigidbody.isKinematic = false;
-        m_MovementInputValue = 0f;
-        m_TurnInputValue = 0f;
     }
 
 
@@ -54,16 +56,27 @@ public class TankBotMovement : MonoBehaviour
     }
 
 
-
+    public Vector3 getPosition(float time, float opponentTurnInputValue, float opponentMovementInputValue) {
+        float step = time / Time.deltaTime;
+        Vector3 nextPosition = opponent.position;
+        Vector3 nextForward = opponent.forward;
+        float turn = opponentTurnInputValue * m_TurnSpeed * Time.deltaTime;
+        Quaternion turnRotation = Quaternion.Euler(0f, turn, 0f);
+        while (step > 0) {
+            nextForward = turnRotation * nextForward;    
+            nextPosition += nextForward * opponentMovementInputValue * m_Speed * Time.deltaTime;
+            step--;
+        }
+        return nextPosition;
+    }
     private void Update()
     {
-        // Debug.Log(opponent.position);
-        // Debug.Log(opponent.rotation);
-        // Store the player's input and make sure the audio for the engine is playing.
-        // Debug.Log("bot : " + m_MovementInputValue + " : " + m_TurnInputValue);
-        float m_OpponentInputValue = Input.GetAxis(m_OpponentMovementAxisName);
-        Vector3 next_position = opponent.position + opponent.forward * m_OpponentInputValue * m_Speed * 0.5f;
-        float distance = Vector3.Distance(transform.position, next_position);
+        float opponentMovementInputValue = Input.GetAxis(m_OpponentMovementAxisName);
+        float opponentTurnInputValue = Input.GetAxis(m_OpponentTurnAxisName);
+        // Debug.Log("opponentMove : " + opponentMovementInputValue + " : " + tankMovement.getMovementInputValue());
+        Vector3 nextPosition = getPosition(predictionTime - tankBotShooting.loadTime, opponentTurnInputValue, opponentMovementInputValue);
+        // Vector3 next_position = opponent.position + (turnRotation * opponent.forward) * m_OpponentInputValue * m_Speed * predictionTime;
+        float distance = Vector3.Distance(transform.position, nextPosition);
         if (tankBotShooting.getFireTime() > 0) {
             if (updateTime > tankBotShooting.delayTime / 3) {
                 // m_MovementInputValue = 0.5f + Random.Range(-randomMovement * 2, randomMovement);
@@ -87,7 +100,7 @@ public class TankBotMovement : MonoBehaviour
         }
         m_MovementInputValue = Mathf.Lerp(lastMovementInput, m_MovementInputValue, Time.deltaTime * 5f);
         lastMovementInput = m_MovementInputValue;
-        Vector3 expected_position = opponent.position + opponent.forward * m_OpponentInputValue * m_Speed * predictionTime;
+        Vector3 expected_position = getPosition(predictionTime, opponentTurnInputValue, opponentMovementInputValue);
         Vector3 targetDir = expected_position - transform.position;
         Vector3 tmp = Vector3.Cross(transform.forward, targetDir);
         float angle = Vector3.Angle(transform.forward, targetDir);

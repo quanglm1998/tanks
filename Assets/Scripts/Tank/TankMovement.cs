@@ -23,6 +23,9 @@ public class TankMovement : MonoBehaviour
         m_Rigidbody = GetComponent<Rigidbody>();
     }
 
+    public float getMovementInputValue() {
+        return m_MovementInputValue;
+    }
 
     private void OnEnable()
     {
