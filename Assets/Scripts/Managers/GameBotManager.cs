@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour
+public class GameBotManager : MonoBehaviour
 {
     public int m_NumRoundsToWin = 3;
     public float m_StartDelay = 1f;
@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public CameraControl m_CameraControl;
     public Text m_MessageText;
     public GameObject m_TankPrefab;
+    public GameObject m_TankBotPrefab;
     public TankManager[] m_Tanks;
 
 
@@ -35,13 +36,17 @@ public class GameManager : MonoBehaviour
 
     private void SpawnAllTanks()
     {
-        for (int i = 0; i < m_Tanks.Length; i++)
-        {
-            m_Tanks[i].m_Instance = Instantiate(m_TankPrefab, m_Tanks[i].m_SpawnPoint.position,
-                m_Tanks[i].m_SpawnPoint.rotation) as GameObject;
-            m_Tanks[i].m_PlayerNumber = i + 1;
-            m_Tanks[i].Setup();
-        }
+        // human controlled
+        m_Tanks[0].m_Instance = Instantiate(m_TankPrefab, m_Tanks[0].m_SpawnPoint.position,
+                m_Tanks[0].m_SpawnPoint.rotation) as GameObject;
+        m_Tanks[0].m_PlayerNumber = 1;
+        m_Tanks[0].Setup();
+
+        // bot controlled
+        m_Tanks[1].m_Instance = Instantiate(m_TankBotPrefab, m_Tanks[1].m_SpawnPoint.position,
+                m_Tanks[1].m_SpawnPoint.rotation) as GameObject;
+        m_Tanks[1].m_PlayerNumber = 2;
+        m_Tanks[1].Setup();
     }
 
 
@@ -66,7 +71,7 @@ public class GameManager : MonoBehaviour
 
         if (m_GameWinner != null)
         {
-            SceneManager.LoadScene("Main");
+            SceneManager.LoadScene("Bot");
         }
         else
         {

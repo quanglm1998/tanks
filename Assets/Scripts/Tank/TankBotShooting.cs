@@ -1,29 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TankBotShooting : MonoBehaviour
+public class TankBotShooting : TankShooting
 {
-    public Rigidbody m_Shell;
-    public Transform m_FireTransform;
-    public Slider m_AimSlider;
-    public AudioSource m_ShootingAudio;
-    public AudioClip m_ChargingClip;
-    public AudioClip m_FireClip;
-    public float m_MinLaunchForce = 15f;
-    public float m_MaxLaunchForce = 30f;
-    public float m_MaxChargeTime = 0.75f;
-
-
-    private string m_FireButton;
-    private float m_CurrentLaunchForce;
-    private float m_ChargeSpeed;
-    private bool m_Fired;
-    private string m_OpponentMovementAxisName;
-    private string m_OpponentTurnAxisName;
-    private Transform opponent;
-    private float m_Speed = 12f;
-    private float fireTime = 0f;
-    private TankBotMovement tankBotMovement;
+    protected string m_OpponentMovementAxisName;
+    protected string m_OpponentTurnAxisName;
+    protected Transform opponent;
+    protected float m_Speed = 12f;
+    protected float fireTime = 0f;
+    protected TankBotMovement tankBotMovement;
     public float delayTime = 3f;
     public float loadTime = 0.6f;
 
@@ -31,14 +16,14 @@ public class TankBotShooting : MonoBehaviour
         return fireTime;
     }
 
-    private void OnEnable()
+    protected new void OnEnable()
     {
         m_CurrentLaunchForce = m_MinLaunchForce;
         m_AimSlider.value = m_MinLaunchForce;
     }
 
 
-    private void Start()
+    protected new void Start()
     {
         fireTime = delayTime;
         opponent = GameObject.FindGameObjectsWithTag("Player")[0].transform;
@@ -49,7 +34,7 @@ public class TankBotShooting : MonoBehaviour
     }
 
 
-    private void Update()
+    protected new void Update()
     {
         float opponentMovementInputValue = Input.GetAxis(m_OpponentMovementAxisName);
         float opponentTurnInputValue = Input.GetAxis(m_OpponentTurnAxisName);
@@ -94,7 +79,7 @@ public class TankBotShooting : MonoBehaviour
     }
 
 
-    private void Fire()
+    protected new void Fire()
     {
         // Instantiate and launch the shell.
         fireTime = delayTime;

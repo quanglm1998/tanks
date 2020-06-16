@@ -10,15 +10,15 @@ public class TankMovement : MonoBehaviour
     public AudioClip m_EngineDriving;
     public float m_PitchRange = 0.2f;
 
-    private string m_MovementAxisName;
-    private string m_TurnAxisName;
-    private Rigidbody m_Rigidbody;
-    private float m_MovementInputValue;
-    private float m_TurnInputValue;
-    private float m_OriginalPitch;
+    protected string m_MovementAxisName;
+    protected string m_TurnAxisName;
+    protected Rigidbody m_Rigidbody;
+    protected float m_MovementInputValue;
+    protected float m_TurnInputValue;
+    protected float m_OriginalPitch;
 
 
-    private void Awake()
+    protected void Awake()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
     }
@@ -27,7 +27,7 @@ public class TankMovement : MonoBehaviour
         return m_MovementInputValue;
     }
 
-    private void OnEnable()
+    protected void OnEnable()
     {
         m_Rigidbody.isKinematic = false;
         m_MovementInputValue = 0f;
@@ -35,13 +35,13 @@ public class TankMovement : MonoBehaviour
     }
 
 
-    private void OnDisable()
+    protected void OnDisable()
     {
         m_Rigidbody.isKinematic = true;
     }
 
 
-    private void Start()
+    protected void Start()
     {
         m_MovementAxisName = "Vertical" + m_PlayerNumber;
         m_TurnAxisName = "Horizontal" + m_PlayerNumber;
@@ -49,7 +49,7 @@ public class TankMovement : MonoBehaviour
     }
 
 
-    private void Update()
+    protected void Update()
     {
         // Store the player's input and make sure the audio for the engine is playing.
         m_MovementInputValue = Input.GetAxis(m_MovementAxisName);
@@ -58,7 +58,7 @@ public class TankMovement : MonoBehaviour
     }
 
 
-    private void EngineAudio()
+    protected void EngineAudio()
     {
         // Play the correct audio clip based on whether or not the tank is moving and what audio is 
         // currently playing.
@@ -85,7 +85,7 @@ public class TankMovement : MonoBehaviour
     }
 
 
-    private void FixedUpdate()
+    protected void FixedUpdate()
     {
         // Move and turn the tank.
         Move();
@@ -93,7 +93,7 @@ public class TankMovement : MonoBehaviour
     }
 
 
-    private void Move()
+    protected void Move()
     {
         // Adjust the position of the tank based on the player's input.
         Vector3 movement = transform.forward * m_MovementInputValue * m_Speed * Time.deltaTime;
@@ -101,7 +101,7 @@ public class TankMovement : MonoBehaviour
     }
 
 
-    private void Turn()
+    protected void Turn()
     {
         // Adjust the rotation of the tank based on the player's input.
         float turn = m_TurnInputValue * m_TurnSpeed * Time.deltaTime;
