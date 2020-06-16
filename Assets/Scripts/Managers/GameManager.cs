@@ -19,10 +19,12 @@ public class GameManager : MonoBehaviour
     private WaitForSeconds m_EndWait;
     private TankManager m_RoundWinner;
     private TankManager m_GameWinner;
-
+    private GameObject panel;
 
     private void Start()
     {
+        panel = GameObject.FindGameObjectWithTag("Panel"); 
+        panel.SetActive(false);
         m_StartWait = new WaitForSeconds(m_StartDelay);
         m_EndWait = new WaitForSeconds(m_EndDelay);
 
@@ -66,7 +68,9 @@ public class GameManager : MonoBehaviour
 
         if (m_GameWinner != null)
         {
-            SceneManager.LoadScene("Main");
+            m_MessageText.text = string.Empty;
+            panel.SetActive(true);
+            while (true) yield return null;
         }
         else
         {
