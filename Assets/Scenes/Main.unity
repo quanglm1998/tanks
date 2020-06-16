@@ -545,7 +545,7 @@ MonoBehaviour:
   m_EndDelay: 2
   m_CameraControl: {fileID: 1723303891}
   m_MessageText: {fileID: 757298235}
-  m_TankPrefab: {fileID: 1448907371205044, guid: ed61df44d723d4fe9bd367647dd8e17e,
+  m_TankPrefab: {fileID: 4655030822733484806, guid: defc38258d6ca73ca94e87e98d84219d,
     type: 3}
   m_Tanks:
   - m_PlayerColor: {r: 0.16470589, g: 0.39215687, b: 0.69803923, a: 0}
