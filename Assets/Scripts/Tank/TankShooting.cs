@@ -35,6 +35,10 @@ public class TankShooting : MonoBehaviour
         m_ChargeSpeed = (m_MaxLaunchForce - m_MinLaunchForce) / m_MaxChargeTime;
     }
 
+    public virtual void SetUp(float bot_delayTime, float bot_loadTime) {
+        
+    }
+
 
     protected void Update()
     {

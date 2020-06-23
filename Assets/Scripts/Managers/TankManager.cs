@@ -17,6 +17,13 @@ public class TankManager
     private GameObject m_CanvasGameObject;
 
 
+    public TankMovement GetTankMovement() {
+        return m_Movement;
+    }
+
+    public TankShooting GetTankShooting() {
+        return m_Shooting;
+    }
     public void Setup()
     {
         m_Movement = m_Instance.GetComponent<TankMovement>();

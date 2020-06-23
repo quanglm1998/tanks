@@ -37,6 +37,27 @@ public class GameBotManager : MonoBehaviour
     }
 
 
+    private void BotSetup(TankManager tankBot) {
+        if (DifficultyManager.difficulty == 0) {
+            Debug.Log("Easy level");
+            tankBot.GetTankMovement().SetUp(3f, 0.4f);
+            tankBot.GetTankShooting().SetUp(4f, 0.2f);
+            return;
+        }
+        if (DifficultyManager.difficulty == 1) {
+            Debug.Log("Medium level");
+            tankBot.GetTankMovement().SetUp(2f, 1f);
+            tankBot.GetTankShooting().SetUp(2.5f, 0.3f);
+            return;
+        }
+        if (DifficultyManager.difficulty == 2) {
+            Debug.Log("Hard level");
+            tankBot.GetTankMovement().SetUp(1.4f, 1.5f);
+            tankBot.GetTankShooting().SetUp(1f, 0.5f);
+            return;
+        }
+        Debug.Log("Insane level");
+    }
     private void SpawnAllTanks()
     {
         // human controlled
@@ -50,6 +71,7 @@ public class GameBotManager : MonoBehaviour
                 m_Tanks[1].m_SpawnPoint.rotation) as GameObject;
         m_Tanks[1].m_PlayerNumber = 2;
         m_Tanks[1].Setup();
+        BotSetup(m_Tanks[1]);
     }
 
 

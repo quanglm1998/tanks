@@ -17,10 +17,13 @@ public class TankMovement : MonoBehaviour
     protected float m_TurnInputValue;
     protected float m_OriginalPitch;
 
-
-    protected void Awake()
+    public void Awake()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
+    }
+
+    public virtual void SetUp(float bot_predictionTime, float bot_turnRate) {
+        
     }
 
     public float getMovementInputValue() {

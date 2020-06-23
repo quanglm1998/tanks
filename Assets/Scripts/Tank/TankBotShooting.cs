@@ -22,6 +22,10 @@ public class TankBotShooting : TankShooting
         m_AimSlider.value = m_MinLaunchForce;
     }
 
+    public override void SetUp(float bot_delayTime, float bot_loadTime) {
+        delayTime = bot_delayTime;
+        loadTime = bot_loadTime;
+    }
 
     protected new void Start()
     {

@@ -14,7 +14,7 @@ public class TankBotMovement : TankMovement
     public float randomMovement = 0.3f;
     public float turnRate = 1;
 
-    protected new void Awake()
+    public new void Awake()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
         opponent = GameObject.FindGameObjectsWithTag("Player")[0].transform;
@@ -24,6 +24,11 @@ public class TankBotMovement : TankMovement
         // tankMovement = GameObject.FindGameObjectsWithTag("Player")[0].GetComponent<TankMovement>();
     }
 
+    public override void SetUp(float bot_predictionTime, float bot_turnRate) {
+        predictionTime = bot_predictionTime;
+        turnRate = bot_turnRate;
+        // Debug.Log(predictionTime + " : " + turnRate);
+    }
 
     protected new void OnEnable()
     {
