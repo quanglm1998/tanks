@@ -13,6 +13,7 @@ public class TankBotMovement : TankMovement
     public float predictionTime = 1.3f;
     public float randomMovement = 0.3f;
     public float turnRate = 1;
+    public float moveSpeed = 1f;
 
     public new void Awake()
     {
@@ -24,9 +25,10 @@ public class TankBotMovement : TankMovement
         // tankMovement = GameObject.FindGameObjectsWithTag("Player")[0].GetComponent<TankMovement>();
     }
 
-    public override void SetUp(float bot_predictionTime, float bot_turnRate) {
+    public override void SetUp(float bot_predictionTime, float bot_turnRate, float bot_MoveSpeed) {
         predictionTime = bot_predictionTime;
         turnRate = bot_turnRate;
+        moveSpeed = bot_MoveSpeed;
         // Debug.Log(predictionTime + " : " + turnRate);
     }
 
@@ -104,6 +106,8 @@ public class TankBotMovement : TankMovement
         {
             m_MovementInputValue = -1;
         }
+        m_MovementInputValue *= moveSpeed * Random.Range(0.5f, 2f);
+        m_MovementInputValue = Mathf.Min(Mathf.Max(-1, m_MovementInputValue), 1);
         m_MovementInputValue = Mathf.Lerp(lastMovementInput, m_MovementInputValue, Time.deltaTime * 5f);
         lastMovementInput = m_MovementInputValue;
         Vector3 expected_position = getPosition(predictionTime, opponentTurnInputValue, opponentMovementInputValue);
@@ -115,7 +119,7 @@ public class TankBotMovement : TankMovement
         {
             angle *= -1;
         }
-        m_TurnInputValue = Mathf.Min(Mathf.Max(-1, angle * turnRate / m_TurnSpeed), 1);
+        m_TurnInputValue = Mathf.Min(Mathf.Max(-1, angle * turnRate * Random.Range(0.5f, 1.5f) / m_TurnSpeed), 1);
 
         EngineAudio();
     }

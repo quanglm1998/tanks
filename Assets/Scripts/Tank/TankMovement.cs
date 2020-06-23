@@ -22,7 +22,7 @@ public class TankMovement : MonoBehaviour
         m_Rigidbody = GetComponent<Rigidbody>();
     }
 
-    public virtual void SetUp(float bot_predictionTime, float bot_turnRate) {
+    public virtual void SetUp(float bot_predictionTime, float bot_turnRate, float bot_MoveSpeed) {
         
     }
 

@@ -29,7 +29,7 @@ public class TankBotShooting : TankShooting
 
     protected new void Start()
     {
-        fireTime = delayTime;
+        fireTime = delayTime * Random.Range(0.3f, 1f);
         opponent = GameObject.FindGameObjectsWithTag("Player")[0].transform;
         m_OpponentMovementAxisName = "Vertical" + 1;
         m_OpponentTurnAxisName = "Horizontal" + 1;
@@ -86,7 +86,7 @@ public class TankBotShooting : TankShooting
     protected new void Fire()
     {
         // Instantiate and launch the shell.
-        fireTime = delayTime;
+        fireTime = delayTime * Random.Range(0.3f, 1f);
         m_Fired = true;
 
         Rigidbody shellInstance = Instantiate(m_Shell, m_FireTransform.position, m_FireTransform.rotation) as Rigidbody;

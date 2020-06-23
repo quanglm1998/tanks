@@ -40,19 +40,19 @@ public class GameBotManager : MonoBehaviour
     private void BotSetup(TankManager tankBot) {
         if (DifficultyManager.difficulty == 0) {
             Debug.Log("Easy level");
-            tankBot.GetTankMovement().SetUp(3f, 0.4f);
+            tankBot.GetTankMovement().SetUp(3f, 0.6f, 0.5f);
             tankBot.GetTankShooting().SetUp(4f, 0.2f);
             return;
         }
         if (DifficultyManager.difficulty == 1) {
             Debug.Log("Medium level");
-            tankBot.GetTankMovement().SetUp(2f, 1f);
-            tankBot.GetTankShooting().SetUp(2.5f, 0.3f);
+            tankBot.GetTankMovement().SetUp(2f, 1f, 0.8f);
+            tankBot.GetTankShooting().SetUp(2f, 0.3f);
             return;
         }
         if (DifficultyManager.difficulty == 2) {
             Debug.Log("Hard level");
-            tankBot.GetTankMovement().SetUp(1.4f, 1.5f);
+            tankBot.GetTankMovement().SetUp(1.4f, 1.5f, 1f);
             tankBot.GetTankShooting().SetUp(1f, 0.5f);
             return;
         }
