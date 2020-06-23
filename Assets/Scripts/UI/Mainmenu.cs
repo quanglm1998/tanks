@@ -5,15 +5,23 @@ using UnityEngine.SceneManagement;
 
 public class Mainmenu : MonoBehaviour
 {
-    public void MultiPlay() {
+    public void MultiPlay()
+    {
         SceneManager.LoadScene("Main");
     }
 
-    public void PlayWithBot() {
+    public void PlayWithBot()
+    {
         SceneManager.LoadScene("Bot");
     }
 
-    public void QuitGame() {
+    public void QuitGame()
+    {
         Application.Quit();
+    }
+
+    public void ChangeDifficulty(int value)
+    {
+        DifficultyManager.difficulty = value;
     }
 }

@@ -69,6 +69,8 @@ public class GameManager : MonoBehaviour
         if (m_GameWinner != null)
         {
             m_MessageText.text = string.Empty;
+            panel.GetComponent<Image>().color = new Color(118f / 255f, 99f / 255f, 74f/255f, 91f/255f);
+            panel.GetComponent<Image>().sprite = null;
             panel.SetActive(true);
             while (true) yield return null;
         }
